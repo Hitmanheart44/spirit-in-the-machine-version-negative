@@ -43,6 +43,36 @@ func _ready() -> void:
 	if run.is_empty():
 		Scenes.goto.call_deferred("res://world/zones/ranch_v2.tscn")
 		return
+
+	# Handle battle outcome first if returning from combat
+	var res = p.get("cup_result")
+	var fighter_str := str(p.get("fighter", "0"))
+	var is_boss := bool(p.get("boss", false))
+	if res != null:
+		Scenes.params.erase("cup_result")
+		if res.get("won", false):
+			run["exp"] = int(run["exp"]) + (40 if is_boss else 12)
+			run["money"] = int(run["money"]) + (200 if is_boss else 25) * int(run["floor"])
+			if is_boss:
+				_end(true, "The guardian is down. The dungeon is cleared!")
+				return
+		else:
+			var f_idx := int(fighter_str)
+			if not f_idx in (run["ko"] as Array):
+				(run["ko"] as Array).append(f_idx)
+			var remaining := 0
+			for t_idx in (run["team"] as Array):
+				if not int(t_idx) in (run["ko"] as Array):
+					remaining += 1
+			if remaining <= 0:
+				_end(false, "The whole team was knocked out.")
+				return
+
+	if run.get("room") is Array and (run["room"] as Array).size() >= 2:
+		room = Vector2i(int(run["room"][0]), int(run["room"][1]))
+	elif run.get("room") is Vector2i:
+		room = run["room"]
+
 	_generate()
 	_spawn_team()
 	hud = DungeonHud.new()
@@ -50,10 +80,13 @@ func _ready() -> void:
 	add_child(hud)
 	add_child(PostFx.new())
 	_enter_room(room, -1)
-	var res = p.get("cup_result")
+
 	if res != null:
-		Scenes.params.erase("cup_result")
-		_after_battle(res, str(p.get("fighter", "0")), bool(p.get("boss", false)))
+		if res.get("won", false):
+			hud.toast("Victory!")
+			_calm = GRACE
+		else:
+			hud.toast("%s is out for the rest of the run." % (Game.monsters[int(fighter_str)] as MonsterData).name)
 
 
 func _dungeon() -> Array:
@@ -250,12 +283,20 @@ func _spawn_team() -> void:
 	var team: Array = run["team"]
 	var lead_i := -1
 	for i in team:
-		if not int(i) in run["ko"]:
+		if not int(i) in (run["ko"] as Array):
 			lead_i = int(i)
 			break
+	if lead_i < 0 and not team.is_empty():
+		lead_i = int(team[0])
 	leader = BODY.instantiate() as MonsterBody
 	leader.data = Game.monsters[lead_i]
-	leader.position = run["pos"] if run["pos"] != null else Vector3(0, 0.3, 0)
+	var p_pos = run.get("pos")
+	if p_pos is Vector3:
+		leader.position = p_pos
+	elif p_pos is Array and (p_pos as Array).size() >= 3:
+		leader.position = Vector3(float(p_pos[0]), float(p_pos[1]), float(p_pos[2]))
+	else:
+		leader.position = Vector3(0, 0.3, 0)
 	var pc := ExploreController.new()
 	leader.add_child(pc)
 	add_child(leader)
@@ -414,14 +455,22 @@ func _after_battle(res: Dictionary, fighter: String, boss: bool) -> void:
 		if boss:
 			_end(true, "The guardian is down. The dungeon is cleared!")
 			return
-		hud.toast("Victory!")
+		if hud != null:
+			hud.toast("Victory!")
 		_calm = GRACE
 	else:
-		(run["ko"] as Array).append(int(fighter))
-		if (run["ko"] as Array).size() >= (run["team"] as Array).size():
+		var f_idx := int(fighter)
+		if not f_idx in (run["ko"] as Array):
+			(run["ko"] as Array).append(f_idx)
+		var remaining := 0
+		for t_idx in (run["team"] as Array):
+			if not int(t_idx) in (run["ko"] as Array):
+				remaining += 1
+		if remaining <= 0:
 			_end(false, "The whole team was knocked out.")
 			return
-		hud.toast("%s is out for the rest of the run." % (Game.monsters[int(fighter)] as MonsterData).name)
+		if hud != null:
+			hud.toast("%s is out for the rest of the run." % (Game.monsters[f_idx] as MonsterData).name)
 
 
 func _end(cleared: bool, why: String, safe := false) -> void:

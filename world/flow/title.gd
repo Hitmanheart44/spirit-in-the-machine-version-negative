@@ -257,6 +257,8 @@ func _delete_save() -> void:
 	Game.new_game()
 	if Game.has_meta("started"):
 		Game.remove_meta("started")
+	if Game.has_meta("loaded"):
+		Game.remove_meta("loaded")
 	get_tree().reload_current_scene()   # the title comes back without Continue and Delete Save
 
 
@@ -271,6 +273,8 @@ func _new_game() -> void:
 func _start_fresh() -> void:
 	Save.delete()
 	Game.set_meta("started", true)
+	if Game.has_meta("loaded"):
+		Game.remove_meta("loaded")
 	Game.new_game()
 	Game.ap = Care.action_points()
 	Save.write()
