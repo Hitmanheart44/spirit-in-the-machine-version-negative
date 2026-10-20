@@ -47,7 +47,8 @@ func _ready() -> void:
 	cam.current = true
 	if target is CollisionObject3D:
 		_arm.add_excluded_object((target as CollisionObject3D).get_rid())
-	if target != null:
+	rotation = Vector3(deg_to_rad(pitch_deg), yaw, 0.0)
+	if target != null and is_instance_valid(target):
 		global_position = target.global_position + Vector3(0, look_height, 0)
 
 
@@ -97,3 +98,13 @@ func _process(delta: float) -> void:
 	_shake = maxf(0.0, _shake - delta * 2.0)
 	cam.h_offset = _shoulder + frame_offset + randf_range(-1.0, 1.0) * _shake * 0.3
 	cam.v_offset = randf_range(-1.0, 1.0) * _shake * 0.3
+
+	var zone_node: Node = get_parent()
+	while zone_node != null and not zone_node.has_method("ground"):
+		zone_node = zone_node.get_parent()
+	if zone_node != null and zone_node.has_method("ground"):
+		var cp := cam.global_position
+		var gy: float = float(zone_node.call("ground", cp.x, cp.z))
+		var floor_y := gy + 0.45
+		if cp.y < floor_y:
+			cam.global_position.y = floor_y

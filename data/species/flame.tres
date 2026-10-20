@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SpeciesDef" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://monsters/species_def.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/models/vexa.glb" id="m"]
+[ext_resource type="PackedScene" path="res://assets/models/flame.glb" id="m"]
 
 [resource]
 script = ExtResource("1")
