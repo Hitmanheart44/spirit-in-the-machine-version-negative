@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="SpeciesDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://monsters/species_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/cragback.glb" id="m"]
+
+[resource]
+script = ExtResource("1")
+roster_order = 6
+id = &"cragback"
+display_name = "Rockguard"
+body_class = "brute"
+bias = PackedInt32Array(4, 5, 3, 1, 1)
+lifespan_weeks = 212
+model_id = ""
+graft = "boulder_fists"
+anim_profile = "biped"
+anim_wings = false
+anim_hair = false
+anim_chest = false
+type = "rock"
+type2 = ""
+main_breed = "stone"
+sub_breed = "stone"
+model_scene = ExtResource("m")
+model_size = 1.0
+lore = "An ancient living fortress carved from weathered granite and mineral ores. Slow to anger, but unshakable once committed to defense."

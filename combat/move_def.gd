@@ -6,6 +6,8 @@ extends Resource
 @export var id: StringName
 @export var display_name: String
 @export_enum("melee", "projectile") var kind: String = "melee"
+## Authored animation clip for this move. Falls back to "Attack" / "Strike".
+@export var anim_name: String = "Attack"
 
 @export_group("Damage")
 @export_enum("power", "focus", "hp", "guard", "speed") var atk_stat: String = "power"

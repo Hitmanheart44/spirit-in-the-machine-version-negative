@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="SpeciesDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://monsters/species_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/reaper.glb" id="m"]
+
+[resource]
+script = ExtResource("1")
+roster_order = 7
+id = &"reaper"
+display_name = "Reaper"
+body_class = "stalker"
+bias = PackedInt32Array(2, 5, 1, 4, 3)
+lifespan_weeks = 145
+model_id = ""
+graft = "scythe_crest"
+anim_profile = "biped"
+anim_wings = false
+anim_hair = false
+anim_chest = false
+type = "dark"
+type2 = ""
+main_breed = "reaper"
+sub_breed = "reaper"
+model_scene = ExtResource("m")
+model_size = 1.0
+lore = "A spectral wraith harvesting wandering spiritual energies with its curved shadow scythe. Swift, elusive, and lethal at close range."

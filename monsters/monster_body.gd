@@ -233,6 +233,20 @@ func _process(delta: float) -> void:
 	var att := get_node_or_null("Attacker") as Attacker
 	var busy := att != null and att.is_busy()
 	if busy and not _was_busy:
-		MonsterModel.play_action(model, "Attack")
+		var move_anim := att.current.anim_name if (att.current != null and att.current.anim_name != "") else "Attack"
+		MonsterModel.play_action(model, _resolve_action(model, move_anim))
 	_was_busy = busy
 	MonsterModel.drive(model, delta, local, k, busy)
+
+
+static func _resolve_action(model: Node3D, anim: String) -> String:
+	if model == null or not model.has_meta("skel"):
+		return anim
+	var player: AnimationPlayer = model.get_meta("skel")
+	if player.has_animation(anim):
+		return anim
+	if player.has_animation("Attack"):
+		return "Attack"
+	if player.has_animation("Strike"):
+		return "Strike"
+	return anim

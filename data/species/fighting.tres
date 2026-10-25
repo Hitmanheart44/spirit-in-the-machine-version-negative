@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="SpeciesDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://monsters/species_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/fighting.glb" id="m"]
+
+[resource]
+script = ExtResource("1")
+roster_order = 5
+id = &"fighting"
+display_name = "Monkey"
+body_class = "biped"
+bias = PackedInt32Array(5, 3, 2, 4, 1)
+lifespan_weeks = 200
+model_id = ""
+graft = "brawler_wraps"
+anim_profile = "biped"
+anim_wings = false
+anim_hair = false
+anim_chest = false
+type = "hit"
+type2 = ""
+main_breed = "fighting"
+sub_breed = "fighting"
+model_scene = ExtResource("m")
+model_size = 1.0
+lore = "A disciplined martial brawler whose swift physical combinations shatter defense before opponents can react."

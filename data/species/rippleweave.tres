@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="SpeciesDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://monsters/species_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/rippleweave.glb" id="m"]
+
+[resource]
+script = ExtResource("1")
+roster_order = 9
+id = &"rippleweave"
+display_name = "Rippleweave"
+body_class = "duelist"
+bias = PackedInt32Array(3, 4, 2, 2, 4)
+lifespan_weeks = 205
+model_id = ""
+graft = "ribbon_wings"
+anim_profile = "biped"
+anim_wings = true
+anim_hair = true
+anim_chest = false
+type = "water"
+type2 = "magic"
+main_breed = "mermaid"
+sub_breed = "faerie"
+model_scene = ExtResource("m")
+model_size = 1.0
+lore = "An aquatic faerie born of tidal reefs. Fin wings carry her skimming across water surfaces as ribbons flutter in the sea breeze."

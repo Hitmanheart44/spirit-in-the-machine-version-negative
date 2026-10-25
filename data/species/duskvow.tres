@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="SpeciesDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://monsters/species_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/models/duskvow.glb" id="m"]
+
+[resource]
+script = ExtResource("1")
+roster_order = 3
+id = &"duskvow"
+display_name = "Duskvow"
+body_class = "caster"
+bias = PackedInt32Array(3, 1, 2, 3, 5)
+lifespan_weeks = 175
+model_id = ""
+graft = "crescent_horns"
+anim_profile = "biped"
+anim_wings = false
+anim_hair = true
+anim_chest = false
+type = "magic"
+type2 = "dark"
+main_breed = "priest"
+sub_breed = "priest"
+model_scene = ExtResource("m")
+model_size = 1.0
+lore = "A disciplined ascetic sworn to nocturnal rites, bearing a ceremonial crescent staff to channel lunar energies."
